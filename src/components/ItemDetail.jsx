@@ -3,6 +3,8 @@ import RatingStars from "./RatingStars";
 import RatingHalfStars from "./RatingHalfStars";
 import ItemCount from "./ItemCount";
 import { Button } from "@headlessui/react";
+import { CartContext } from "../CartContext";
+import { useContext, useState } from "react";
 
 function capitalizeFirstLetter(text) {
   if (!text) return '';
@@ -14,6 +16,9 @@ function ItemDetail( { item }) {
 //     { name: 'Categoria', description: item?.category },
 //     { name: 'Puntuacion', description: item?.rating?.rate },
 // ];
+  const [count, setCount] = useState(1);
+  const { addToCart } = useContext(CartContext);
+
   return (
     <div className="bg-white">
       <div className="mx-auto grid max-w-2xl grid-cols-1 item?s-center gap-x-8 gap-y-16 px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
@@ -54,14 +59,19 @@ function ItemDetail( { item }) {
             <div key="Cantidad" className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Cantidad</dt>
                 <dd className="mt-2 text-sm text-gray-500">
-                  <ItemCount />
+                  <ItemCount count={count} setCount={setCount} />
                 </dd>
             </div>
           {/* Boton Agregar al Carrito ( POR AHORA SIN FUNCIONALIDAD ) */}
             <div key="Comprar" className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900 invisible">.</dt>
                 <dd className="mt-2 text-sm text-gray-500">
-                  <button className="btn btn-primary">Agregar al Carrito</button>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => addToCart({...item, quantity: count}) }
+                  >
+                    Agregar al Carrito
+                  </button>
                 </dd>
             </div>
           </dl>

@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 
-function ItemCount (){
-    const [count, setCount] = useState(1);
+function ItemCount ({ count, setCount }) {
+    // const [count, setCount] = useState(1);
     const increment = () => setCount(count + 1);
     const decrement = () => (count > 1 ? setCount(count - 1): setCount(1));
 

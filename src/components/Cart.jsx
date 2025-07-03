@@ -32,15 +32,15 @@ return (
                             <div>{item.title}</div>
                             <div className="text-xs uppercase font-semibold opacity-60">$ {item.price * item.quantity}</div>
                         </div>
-                        <button className="btn btn-square btn-ghost" onClick={() => alert('Producto agregado')}>
+                        {/* <button className="btn btn-square btn-ghost" onClick={() => alert('Producto agregado')}>
                             -
-                        </button>
+                        </button> */}
                         <button className="btn btn-square btn-ghost disabled">
                             {item.quantity}
                         </button>
-                        <button className="btn btn-square btn-ghost" onClick={() => alert('Producto eliminado')}>
+                        {/* <button className="btn btn-square btn-ghost" onClick={() => alert('Producto eliminado')}>
                             +
-                        </button>
+                        </button> */}
                     </li>
                     ))}
                     <div className="divider"></div>

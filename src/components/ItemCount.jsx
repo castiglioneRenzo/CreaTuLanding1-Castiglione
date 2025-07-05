@@ -14,10 +14,10 @@ function ItemCount ({ count, setCount }) {
     return (
         <div className="flex items-center gap-2">
         {/* Botón - */}
-        <button className="btn btn-square" onClick={decrement}>-</button>
+        <button className="btn btn-square bg-neutral/30" onClick={decrement}>-</button>
 
         {/* Contador */}
-        <div className="p-2 bg-neutral rounded-box text-neutral-content">
+        <div className="p-2 bg-neutral/70 rounded-box text-neutral-content">
             <span className="countdown text-2xl font-mono">
             <span
                 style={{ "--value": count }}
@@ -30,7 +30,7 @@ function ItemCount ({ count, setCount }) {
         </div>
 
         {/* Botón + */}
-        <button className="btn btn-square" onClick={increment}>+</button>
+        <button className="btn btn-square bg-neutral/30" onClick={increment}>+</button>
         </div>
 
     )

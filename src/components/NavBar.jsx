@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import PopOverCategories from './PopOverCategories'
 import { useState, useEffect } from 'react'
 import UserMenuItem from './UserMenuItem'
+import ThemeController from './ThemeController'
 
 const navigation = [
   { name: 'Inicio', href: '#', current: true },
@@ -54,7 +55,7 @@ function NavBar() {
                   <button
                     key={item}                    
                     aria-current={item.current ? 'page' : undefined}
-                    className="flex text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                    className="flex text-secondary-content hover:bg-base-300 hover:text-primary rounded-md px-3 py-2 text-sm font-medium"
                   >
                     <Link to='/'>{item.name}</Link>                    
                   </button>
@@ -67,6 +68,8 @@ function NavBar() {
             <CartWidget />
             {/* Profile dropdown */}
             <UserMenuItem />
+            <div className="divider divider-primary px-2"></div>
+            <ThemeController />
           </div>
         </div>
       </div>

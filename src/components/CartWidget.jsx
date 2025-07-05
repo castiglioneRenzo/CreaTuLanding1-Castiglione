@@ -9,17 +9,22 @@ function CartWidget() {
   const items = getItems != null ? getItems() : [];
   const navigate = useNavigate();
 
+  function truncateText(text, maxLength = 20) {
+    if (!text) return "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "…" : text;
+  }
+
   let cartItemsContent;
   if (items.length > 0) {
     cartItemsContent = (
       <>
       {items.map((item) => (
         <li key={item.id}>
-        <a className="flex items-center gap-2">
-          <img src={item.image} alt={item.title} className="w-8 h-8 rounded" />
-          <span>{item.title}</span>
-          <span className="text-sm text-gray-500">x{item.quantity}</span>
-        </a>
+          <a className="flex items-center gap-2">
+            <img src={item.image} alt={item.title} className="w-8 h-8 rounded" />
+            <span>{truncateText(item.title, 20)}</span>
+            <span className="text-sm text-base-content">x{item.quantity}</span>
+          </a>
         </li>
       ))}
       <div className="divider"></div>

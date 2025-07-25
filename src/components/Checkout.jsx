@@ -1,9 +1,46 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../CartContext";
+import { useNavigate } from "react-router";
 
 function Checkout() {
 
     const { getItems, getTotalPrice } = useContext(CartContext);
+    const navigate = useNavigate();
+    
+    // Estados para los campos del formulario
+    const [formData, setFormData] = useState({
+        nombre: '',
+        email: '',
+        direccion: ''
+    });
+
+    // Función para manejar cambios en los inputs
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Previene la recarga de la página
+        
+        // Validar que los campos no estén vacíos
+        if (!formData.nombre || !formData.email || !formData.direccion) {
+            alert('Por favor completa todos los campos');
+            return;
+        }
+        
+        // Pasar los datos del formulario a OrdenCompra
+        navigate("/orden-compra", { 
+            state: { 
+                clienteData: formData,
+                carrito: getItems(),
+                total: getTotalPrice()
+            } 
+        });
+    };
 
     return (
     <div className="checkout">
@@ -13,18 +50,39 @@ function Checkout() {
         <div className="flex flex-col md:flex-row gap-8">
             {/* Formulario */}
             <div className="flex-1">
-                <form className="space-y-4 bg-base-200 p-6 rounded-lg shadow">
+                <form onSubmit={handleSubmit} className="space-y-4 bg-base-200 p-6 rounded-lg shadow">
                     <div>
                         <label className="block mb-1 font-medium">Nombre</label>
-                        <input type="text" className="input input-bordered w-full" placeholder="Tu nombre" />
+                        <input 
+                            type="text" 
+                            name="nombre"
+                            value={formData.nombre}
+                            onChange={handleInputChange}
+                            className="input input-bordered w-full" 
+                            placeholder="Tu nombre" 
+                        />
                     </div>
                     <div>
                         <label className="block mb-1 font-medium">Correo electrónico</label>
-                        <input type="email" className="input input-bordered w-full" placeholder="tu@email.com" />
+                        <input 
+                            type="email" 
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            className="input input-bordered w-full" 
+                            placeholder="tu@email.com" 
+                        />
                     </div>
                     <div>
                         <label className="block mb-1 font-medium">Dirección</label>
-                        <input type="text" className="input input-bordered w-full" placeholder="Dirección de envío" />
+                        <input 
+                            type="text" 
+                            name="direccion"
+                            value={formData.direccion}
+                            onChange={handleInputChange}
+                            className="input input-bordered w-full" 
+                            placeholder="Dirección de envío" 
+                        />
                     </div>
                     <button type="submit" className="btn btn-primary w-full">Finalizar compra</button>
                 </form>

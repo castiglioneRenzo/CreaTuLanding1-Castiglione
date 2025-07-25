@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import { CartContext } from '../CartContext';
 import { addDocumentToCollection } from '../firebase/db';
@@ -13,8 +13,12 @@ function OrdenCompra(){
     const [orderID, setOrderID] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [clienteData, setClienteData] = useState({});
+    const hasProcessedOrder = useRef(false); // Bandera para evitar doble procesamiento
     
     useEffect(() => {
+        // Si ya procesamos la orden, no la procesamos de nuevo
+        if (hasProcessedOrder.current) return;
+        
         // Obtener datos del state de la navegación
         const { clienteData: cliente, carrito, total } = location.state || {};
         
@@ -23,26 +27,28 @@ function OrdenCompra(){
         setTotalPrice(total || getTotalPrice());
         setClienteData(cliente || {});
         
+        const items = [];
         items_.map((item) => {
             // Generar la orden de compra
-            const items = {
+            items.push({
                 itemID: item.id,
                 price: item.price,
                 quantity: item.quantity
-            };        
+            });
         });
         const order = {
             name: cliente?.nombre || "Nombre del Cliente",
             email: cliente?.email || "Email del Cliente",
             address: cliente?.direccion || "Direccion del Cliente",
-            items: items_
+            items: items
         };
         
         // Guardar la orden de compra en firebase
-        const orderID = addDocumentToCollection("ventas", order);
-        setOrderID(orderID);
-        // Limpiar el carrito
-        clearCart();
+            hasProcessedOrder.current = true; // Marcar como procesado PARA EVITAR DUPLICAR REGISTROS EN FIREBASE
+            const orderID = addDocumentToCollection("ventas", order);
+            setOrderID(orderID);
+            // Limpiar el carrito
+            clearCart();
     }, [location.state]);
 
     return (

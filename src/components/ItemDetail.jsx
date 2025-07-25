@@ -68,7 +68,10 @@ function ItemDetail( { item }) {
                 <dd className="mt-2 text-sm text-base-300">
                   <button 
                     className="btn btn-primary"
-                    onClick={() => addToCart({...item, quantity: count}) }
+                    onClick={() => {
+                      addToCart({...item, quantity: count});
+                      alert(`Agregado ${count} ${item?.title} al carrito`);
+                    }}
                   >
                     Agregar al Carrito
                   </button>

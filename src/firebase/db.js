@@ -44,30 +44,3 @@ export const getDocumentById = async (collectionName, id) => {
     return doc ? { id: doc.id, ...doc.data() } : null;
 };
 
-export const getUniqueProductosByTitle = async () => {
-    const col = collection(db, "productos");
-    const snapshot = await getDocs(col);
-    const productos = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    const unique = [];
-    const titles = new Set();
-    const duplicates = [];
-
-    for (const producto of productos) {
-        if (!titles.has(producto.title)) {
-            titles.add(producto.title);
-            unique.push(producto);
-        } else {
-            duplicates.push(producto.id);
-        }
-    }
-
-    // Elimina los documentos duplicados en Firebase
-    if (duplicates.length > 0) {
-        const { deleteDoc, doc } = await import("firebase/firestore");
-        for (const id of duplicates) {
-            await deleteDoc(doc(db, "productos", id));
-        }
-    }
-
-    return unique;
-};

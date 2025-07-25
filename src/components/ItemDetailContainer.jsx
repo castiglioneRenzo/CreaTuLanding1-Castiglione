@@ -2,21 +2,29 @@
 import { useState, useEffect, use } from "react";
 import { useParams } from "react-router";
 import ItemDetail from "./ItemDetail";
+import { getDocumentById } from "../firebase/db";
 
 
-function ItemListContainer(params) {
+function ItemDetailContainer(params) {
     const [item, setItem] = useState([]);
     const {id} = useParams();
 
-    useEffect(() => {
-        const url = `https://fakestoreapi.com/products/${id}`; // Fetching a specific product by ID
+    // useEffect(() => {
+    //     const url = `https://fakestoreapi.com/products/${id}`; // Fetching a specific product by ID
 
-        fetch(url)
-            .then((response) => response.json())
+    //     fetch(url)
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setItem(data);
+    //         })
+    //         .catch((error) => console.error('Error fetching products:', error));
+    // }, [id]);
+    useEffect(() => {
+        getDocumentById("productos", id)
             .then((data) => {
                 setItem(data);
             })
-            .catch((error) => console.error('Error fetching products:', error));
+            .catch((error) => console.error('Error fetching product:', error));
     }, [id]);
     
     return (
@@ -24,4 +32,4 @@ function ItemListContainer(params) {
     )
 }
 
-export default ItemListContainer;
+export default ItemDetailContainer;

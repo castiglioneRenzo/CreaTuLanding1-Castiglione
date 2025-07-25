@@ -6,6 +6,7 @@ import PopOverCategories from './PopOverCategories'
 import { useState, useEffect } from 'react'
 import UserMenuItem from './UserMenuItem'
 import ThemeController from './ThemeController'
+import { getCategories } from '../firebase/db' // Adjust the import path as necessary
 
 const navigation = [
   { name: 'Inicio', href: '#', current: true },
@@ -19,17 +20,29 @@ function NavBar() {
 
   const [items, setItems] = useState([]);  
 
+  // useEffect(() => {
+  //   const urlCategories = `https://fakestoreapi.com/products/categories`;
+
+  //   fetch(urlCategories)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setItems(data);
+  //     })
+  //     .catch((error) => console.error('Error fetching categories:', error));
+  // }, []);
+
   useEffect(() => {
-    const urlCategories = `https://fakestoreapi.com/products/categories`;
-
-    fetch(urlCategories)
-      .then((response) => response.json())
-      .then((data) => {
-        setItems(data);
-      })
-      .catch((error) => console.error('Error fetching categories:', error));
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories('productos');
+        setItems(categories);
+      } 
+      catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
   }, []);
-
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
